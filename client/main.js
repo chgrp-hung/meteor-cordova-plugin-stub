@@ -4,7 +4,7 @@ import { HTTP } from 'meteor/http';
 import './main.html';
 
 Template.stub.onCreated(function stubOnCreated() {
-  
+
   if (!Meteor.isCordova) {
     return false;
   }
@@ -13,7 +13,7 @@ Template.stub.onCreated(function stubOnCreated() {
   LocalPlayers = new Mongo.Collection(null);
 
   //use `randomUser` service to get some fake player data
-  HTTP.call('GET', 'https://randomuser.me/api', 
+  HTTP.call('GET', 'https://randomuser.me/api',
     {params: {results: 5, nat: 'us'}},
     function(error, data) {
       data.data.results.forEach(function(user, index, array) {
@@ -38,7 +38,7 @@ Template.stub.onCreated(function stubOnCreated() {
     maxDuration: 60, //max length in seconds
     players: LocalPlayers.find().fetch(), //player objects with name, avatar, etc
     orientation: 'landscape', // allowed orientation: 'landscape' | 'portrait' | 'both'
-    resolution: '960x540', // video resolution 
+    resolution: '960x540', // video resolution
     bitrate: 1.5 //bitrate in Megabits per second
   }
 
@@ -65,6 +65,8 @@ Template.stub.events({
   'click button'(event, instance) {
     console.log(instance.pluginOptions);
     //call plugin -- change this to the name of whatever plugin you want to call
-    navigator.device.capture.captureVideo(instance.onPluginSuccess, instance.onPluginError, instance.pluginOptions);
+    //navigator.device.capture.captureVideo(instance.onPluginSuccess, instance.onPluginError, instance.pluginOptions);
+    EchoPlugin.echo("hello i am echo", instance.onPluginSuccess);
+    EchoPlugin.getDate(instance.onPluginSuccess);
   },
 });
