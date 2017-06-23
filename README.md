@@ -18,3 +18,5 @@ More on Meteor and Cordova here: https://guide.meteor.com/mobile.html#introducti
 
 ## Update cordova plugin options
 All code for calling plugins and handling success/error callbacks is in `client/main.js`
+
+test
