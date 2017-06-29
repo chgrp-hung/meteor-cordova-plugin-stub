@@ -16,6 +16,8 @@ Template.stub.onCreated(function stubOnCreated() {
   HTTP.call('GET', 'https://randomuser.me/api',
     {params: {results: 5, nat: 'us'}},
     function(error, data) {
+      if (error) throw error
+
       data.data.results.forEach(function(user, index, array) {
         var jerseyColor;
         Math.random() >= 0.5 ? jerseyColor = 'light' : jerseyColor = 'dark';
@@ -47,10 +49,16 @@ Template.stub.onCreated(function stubOnCreated() {
   //`cuepoints` is an array of captured moments with:
   // (1) playerIds, (2) universal timestamp of tap event, (3) # seconds into video of tap event
   this.onPluginSuccess = function(videoPath, cuepoints) {
+    var i, path, len;
+    for (i = 0, len = mediaFiles.length; i < len; i += 1) {
+      console.log(videoPath)
+      path = videoPath[i].fullPath;
+    }
   }
 
   //pass error to this when plugin exits unsuccessfully
   this.onPluginError = function(error) {
+    navigator.notification.alert(`Error code: ${error.code} Capture Error`)
   }
 
 });
@@ -63,10 +71,11 @@ Template.stub.helpers({
 
 Template.stub.events({
   'click button'(event, instance) {
-    console.log(instance.pluginOptions);
     //call plugin -- change this to the name of whatever plugin you want to call
     //navigator.device.capture.captureVideo(instance.onPluginSuccess, instance.onPluginError, instance.pluginOptions);
-    EchoPlugin.echo("hello i am echo", instance.onPluginSuccess);
-    EchoPlugin.getDate(instance.onPluginSuccess);
+    // EchoPlugin.echo("hello i am echo", instance.onPluginSuccess);
+    // EchoPlugin.getDate(instance.onPluginSuccess);
+    // navigator.device.capture.captureVideo(instance.onPluginSuccess, instance.onPluginError, { ...instance.pluginOptions, players: LocalPlayers.find().fetch() })
+    lorcamera.createSession(instance.onPluginSuccess, instance.onPluginError, { ...instance.pluginOptions, players: LocalPlayers.find().fetch() })
   },
 });
